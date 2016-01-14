@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first Three.js app</title>
+		<style>
+			body { margin: 0; }
+
+		</style>
+		<script src="js/jquery-2.2.0.min.js"></script>
+		<script src="js/Physics.js"></script>
+		<script src="js/three.min.js"></script>
+		<script src="js/KeyboardState.js"></script>
+	</head>
+	<body>
+		<script>
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			var r = 5
+			var geometry = new THREE.CircleGeometry( r, 32 );
+			var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+			var c = new THREE.Mesh( geometry, material );
+			scene.add( c );
+
+			camera.position.z = 100;
+
+			var cube = Body.create({mesh: c, radius: r, position: {x: 20, y: 20}});
+			
+			var r = 10
+			var geometry = new THREE.CircleGeometry( r, 32 );
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			var c = new THREE.Mesh( geometry, material );
+			
+			scene.add( c );
+			var circle1 = Body.create({mesh: c, radius: r});
+			
+			var w = World.create();
+				w.add([cube,circle1]);
+			
+			var keyboard = new KeyboardState();
+			
+			var clock = new THREE.Clock();
+			
+			var keyUpdate = function() {
+				keyboard.update();
+				
+				if ( keyboard.down("left") ) 
+					cube.applyImpulse( {x: -1, y: 0} );	
+				if ( keyboard.down("right") ) 
+					cube.applyImpulse( {x: 1, y: 0} );
+				if ( keyboard.pressed("up") )
+					cube.applyImpulse( {x: 0, y: 1} );
+				if ( keyboard.pressed("down") )
+					cube.applyImpulse(  {x: 0, y: -1} );
+			};
+			
+			var posUpdate = function(delta) {
+				w.update(delta);
+				for (body in w.children) {
+					var b = w.children[body];
+					b.mesh.position.x = b.position.x;
+					b.mesh.position.y = b.position.y;
+				}
+			};
+			
+			var render = function () {
+				var delta = clock.getDelta();
+				requestAnimationFrame( render );
+				renderer.render(scene, camera);
+				keyUpdate();
+				posUpdate(delta);
+			};
+
+			render();
+		</script>
+	</body>
+</html>
