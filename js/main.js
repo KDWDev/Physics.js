@@ -70,11 +70,3 @@ var render = function () {
 	requestAnimationFrame( render );
 	renderer.render(scene, camera);
 };
-
-(function(){
-	world = new world();
-	addBody(35);
-	player = addPlayer(10);
-	player.name = "player";
-	render();
-})();

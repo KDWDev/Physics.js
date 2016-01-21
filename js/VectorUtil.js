@@ -1,7 +1,4 @@
-/*
-	TODO
-		* Unit tangent & normals
-*/
+//vectormaths
 
 Vector = {};
 

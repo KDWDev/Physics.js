@@ -8,14 +8,23 @@
 
 		</style>
 		<script src="js/jquery-2.2.0.min.js"></script>
-		<script src="js/Physics.js"></script>
+		<script src="js/VectorUtil.js"></script>
+		<script src="js/Body.js"></script>
+		<script src="js/World.js"></script>
 		<script src="js/three.min.js"></script>
 		<script src="js/KeyboardState.js"></script>
 		<script src="js/main.js"></script>
 	</head>
 	<body>
 		<script>
-			document.body.appendChild( renderer.domElement );
+			(function(){
+				document.body.appendChild( renderer.domElement );
+				world = new world();
+				addBody(35);
+				player = addPlayer(10);
+				player.name = "player";
+				render();
+			})();
 		</script>
 	</body>
 </html>
